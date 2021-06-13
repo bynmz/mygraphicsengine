@@ -1,2 +1,2 @@
 build/
-*.spv
+shaders/*.spv
