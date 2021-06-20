@@ -4,6 +4,7 @@
 #include "lve_pipeline.hpp"
 #include "lve_device.hpp"
 #include "lve_swap_chain.hpp"
+#include "lve_model.hpp"
 
 // std
 #include <memory>
@@ -14,6 +15,7 @@ namespace m_lve
     class FirstApp
     {
     private:
+        void loadModels(); 
         void createPipelineLayout();
         void createPipeline();
         void createCommandBuffers();
@@ -25,6 +27,7 @@ namespace m_lve
         std::unique_ptr<LvePipeline> lvePipeline;
         VkPipelineLayout pipelineLayout;
         std::vector<VkCommandBuffer> commandBuffers;
+        std::unique_ptr<LveModel> lveModel;
 
     public:
         static constexpr int WIDTH = 800;

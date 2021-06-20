@@ -16,6 +16,9 @@ target_link_libraries(MyGraphicsEngine PRIVATE "${GLFW_LIB}")
 find_path(GLFW_INC glfw3)
 target_include_directories(MyGraphicsEngine PRIVATE "${GLFW_INC}")
 
+#add the GLM library
+find_path(GLM_DIR glm)
+target_include_directories(MyGraphicsEngine PRIVATE "${GLM_DIR}")
 
 #add vulkan library
 find_path(VULKAN_INC vulkan)
@@ -23,3 +26,6 @@ target_include_directories(MyGraphicsEngine PRIVATE "${VULKAN_INC}")
 
 find_library(VULKAN_LIB vulkan)
 target_link_libraries(MyGraphicsEngine PRIVATE "${VULKAN_LIB}")
+
+
+## TODO: Automatically compile shader files
