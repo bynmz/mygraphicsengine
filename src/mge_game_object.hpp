@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lve_model.hpp"
+#include "mge_model.hpp"
 
 // libs
 #include <glm/gtc/matrix_transform.hpp>
@@ -8,7 +8,7 @@
 // std
 #include <memory>
 
-namespace m_lve {
+namespace mge {
 
     struct TransformComponent {
         glm::vec3 translation{}; // (position offset)
@@ -48,29 +48,29 @@ namespace m_lve {
         }
     };
 
-    class LveGameObject
+    class MgeGameObject
     {
     public:
         using id_t = unsigned int;
 
-        static LveGameObject createGameObject() {
+        static MgeGameObject createGameObject() {
             static id_t currentId = 0;
-            return LveGameObject{currentId++};
+            return MgeGameObject{currentId++};
         }
 
-        LveGameObject(const LveGameObject &) = delete;
-        LveGameObject &operator=(const LveGameObject &) = delete;
-        LveGameObject(LveGameObject &&) = default;
-        LveGameObject &operator=(LveGameObject &&) = default;
+        MgeGameObject(const MgeGameObject &) = delete;
+        MgeGameObject &operator=(const MgeGameObject &) = delete;
+        MgeGameObject(MgeGameObject &&) = default;
+        MgeGameObject &operator=(MgeGameObject &&) = default;
 
         const id_t getId() { return id; }
 
-        std::shared_ptr<LveModel> model{};
+        std::shared_ptr<MgeModel> model{};
         glm::vec3 color{};
         TransformComponent transform{};
 
     private:
-        LveGameObject(id_t objId) : id{objId} {}
+        MgeGameObject(id_t objId) : id{objId} {}
 
         id_t id;
     };

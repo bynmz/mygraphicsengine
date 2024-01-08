@@ -12,7 +12,7 @@
 #include <cassert>
 #include <stdexcept>
 
-namespace m_lve
+namespace mge
 {
 
     struct SimplePushConstantData {
@@ -20,12 +20,12 @@ namespace m_lve
         alignas(16) glm::vec3 color;
     };
 
-    SimpleRenderSystem::SimpleRenderSystem(LveDevice& device, VkRenderPass renderPass) : lveDevice{device} {
+    SimpleRenderSystem::SimpleRenderSystem(MgeDevice& device, VkRenderPass renderPass) : mgeDevice{device} {
         createPipelineLayout();
         createPipeline(renderPass);
     }
 
-    SimpleRenderSystem::~SimpleRenderSystem() {vkDestroyPipelineLayout(lveDevice.device(), pipelineLayout, nullptr);}
+    SimpleRenderSystem::~SimpleRenderSystem() {vkDestroyPipelineLayout(mgeDevice.device(), pipelineLayout, nullptr);}
 
     void SimpleRenderSystem::createPipelineLayout() {
 
@@ -40,7 +40,7 @@ namespace m_lve
         pipelineLayoutInfo.pSetLayouts = nullptr;
         pipelineLayoutInfo.pushConstantRangeCount = 1;
         pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
-        if (vkCreatePipelineLayout(lveDevice.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) !=
+        if (vkCreatePipelineLayout(mgeDevice.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) !=
         VK_SUCCESS) {
             throw std::runtime_error("failed to create pipeline layout!");
         }
@@ -50,11 +50,11 @@ namespace m_lve
         assert(pipelineLayout != nullptr && "Cannot create pipeline before pipeline layout");
 
         PipelineConfigInfo pipelineConfig{};
-        LvePipeline::defaultPipelineConfigInfo(pipelineConfig);
+        MgePipeline::defaultPipelineConfigInfo(pipelineConfig);
         pipelineConfig.renderPass = renderPass;
         pipelineConfig.pipelineLayout = pipelineLayout;
-        lvePipeline = std::make_unique<LvePipeline>(
-            lveDevice,
+        mgePipeline = std::make_unique<MgePipeline>(
+            mgeDevice,
             "../shaders/simple_shader.vert.spv",
             "../shaders/simple_shader.frag.spv",
             pipelineConfig);
@@ -62,9 +62,9 @@ namespace m_lve
 
     void SimpleRenderSystem::renderGameObjects(
             VkCommandBuffer commandBuffer, 
-            std::vector<LveGameObject> &gameObjects,
-            const LveCamera &camera) {
-        lvePipeline->bind(commandBuffer);
+            std::vector<MgeGameObject> &gameObjects,
+            const MgeCamera &camera) {
+        mgePipeline->bind(commandBuffer);
 
         auto projectionView = camera.getProjection() * camera.getView();
 

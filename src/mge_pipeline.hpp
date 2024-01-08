@@ -1,12 +1,12 @@
 #pragma once
 
-#include "lve_device.hpp"
+#include "mge_device.hpp"
 
 // std
 #include <string>
 #include <vector>
 
-namespace m_lve {
+namespace mge {
 
     struct PipelineConfigInfo {
         PipelineConfigInfo(const PipelineConfigInfo&) = delete;
@@ -25,17 +25,17 @@ namespace m_lve {
         VkRenderPass renderPass = nullptr;
         uint32_t subpass = 0;
     };
-    class LvePipeline {
+    class MgePipeline {
         public:
-        LvePipeline(
-            LveDevice &device, 
+        MgePipeline(
+            MgeDevice &device, 
             const std::string& vertFilepath, 
             const std::string& fragFilepath, 
             const PipelineConfigInfo& configInfo);
-        ~LvePipeline();
+        ~MgePipeline();
 
-        LvePipeline(const LvePipeline&) = delete;
-        LvePipeline& operator=(const LvePipeline&) = delete;
+        MgePipeline(const MgePipeline&) = delete;
+        MgePipeline& operator=(const MgePipeline&) = delete;
 
         void bind(VkCommandBuffer commandBuffer);
         
@@ -51,9 +51,9 @@ namespace m_lve {
         
         void createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule);
 
-        LveDevice& lveDevice;
+        MgeDevice& mgeDevice;
         VkPipeline graphicsPipeline;
         VkShaderModule vertShaderModule;
         VkShaderModule fragShaderModule;
     };
-} // namespace m_lve
+} // namespace mge

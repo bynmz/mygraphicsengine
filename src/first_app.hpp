@@ -1,26 +1,26 @@
 #pragma once
 
-#include "lve_window.hpp"
-#include "lve_game_object.hpp"
-#include "lve_device.hpp"
-#include "lve_renderer.hpp"
+#include "mge_window.hpp"
+#include "mge_game_object.hpp"
+#include "mge_device.hpp"
+#include "mge_renderer.hpp"
 
 // std
 #include <memory>
 #include <vector>
 
-namespace m_lve
+namespace mge
 {
     class FirstApp
     {
     private:
         void loadGameObjects(); 
 
-        LveWindow lveWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
-        LveDevice lveDevice{lveWindow};
-        LveRenderer lveRenderer{lveWindow, lveDevice};
+        MgeWindow mgeWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
+        MgeDevice mgeDevice{mgeWindow};
+        MgeRenderer mgeRenderer{mgeWindow, mgeDevice};
         
-        std::vector<LveGameObject> gameObjects;
+        std::vector<MgeGameObject> gameObjects;
 
     public:
         static constexpr int WIDTH = 800;
@@ -35,4 +35,4 @@ namespace m_lve
         void run();
     };
 
-} // namespace m_lve
+} // namespace mge

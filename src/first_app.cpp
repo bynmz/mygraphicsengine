@@ -1,6 +1,6 @@
 #include "first_app.hpp"
 #include "simple_render_system.hpp"
-#include "lve_camera.hpp"
+#include "mge_camera.hpp"
 
 // libs
 #define GLM_FORCE_RADIANS
@@ -14,7 +14,7 @@
 #include <cassert>
 #include <stdexcept>
 
-namespace m_lve
+namespace mge
 {
 
     FirstApp::FirstApp() { loadGameObjects(); }
@@ -23,33 +23,33 @@ namespace m_lve
 
     void FirstApp::run()
     {
-        SimpleRenderSystem simpleRenderSystem{lveDevice, lveRenderer.getSwapChainRenderPass()};
-        LveCamera camera{};
+        SimpleRenderSystem simpleRenderSystem{mgeDevice, mgeRenderer.getSwapChainRenderPass()};
+        MgeCamera camera{};
         // camera.setViewDirection(glm::vec3(0.f), glm::vec3(0.5f, 0.f, 1.f));
         camera.setViewTarget(glm::vec3(-1.f, -2.f, 2.f), glm::vec3(0.f, 0.f, 2.5f));
 
-        while (!lveWindow.shouldClose())
+        while (!mgeWindow.shouldClose())
         {
             glfwPollEvents();
 
-            float aspect = lveRenderer.getAspectRatio();
+            float aspect = mgeRenderer.getAspectRatio();
             // camera.setOrthographicProjection(-aspect, aspect, -1, 1, -1, 1);
             camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 10.f);
             
-            if (auto commandBuffer = lveRenderer.beginFrame()) {
-                lveRenderer.beginSwapChainRenderPass(commandBuffer);
+            if (auto commandBuffer = mgeRenderer.beginFrame()) {
+                mgeRenderer.beginSwapChainRenderPass(commandBuffer);
                 simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects, camera);
-                lveRenderer.endSwapChainRenderPass(commandBuffer);
-                lveRenderer.endFrame();
+                mgeRenderer.endSwapChainRenderPass(commandBuffer);
+                mgeRenderer.endFrame();
             }
         }
 
-        vkDeviceWaitIdle(lveDevice.device());
+        vkDeviceWaitIdle(mgeDevice.device());
     }
 
     // temporary helper function, creates a 1x1x1 cube centered at offset
-std::unique_ptr<LveModel> createCubeModel(LveDevice& device, glm::vec3 offset) {
-  std::vector<LveModel::Vertex> vertices{
+std::unique_ptr<MgeModel> createCubeModel(MgeDevice& device, glm::vec3 offset) {
+  std::vector<MgeModel::Vertex> vertices{
  
       // left face (white)
       {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
@@ -103,13 +103,13 @@ std::unique_ptr<LveModel> createCubeModel(LveDevice& device, glm::vec3 offset) {
   for (auto& v : vertices) {
     v.position += offset;
   }
-  return std::make_unique<LveModel>(device, vertices);
+  return std::make_unique<MgeModel>(device, vertices);
 }
 
     void FirstApp::loadGameObjects() {
-        std::shared_ptr<LveModel> lveModel = createCubeModel(lveDevice, {.0f, .0f, .0f});
-        auto cube = LveGameObject::createGameObject();
-        cube.model = lveModel;
+        std::shared_ptr<MgeModel> mgeModel = createCubeModel(mgeDevice, {.0f, .0f, .0f});
+        auto cube = MgeGameObject::createGameObject();
+        cube.model = mgeModel;
         cube.transform.translation = {.0f, .0f, 2.5f};
         cube.transform.scale = {.5f, .5f, .5f};
         gameObjects.push_back(std::move(cube));

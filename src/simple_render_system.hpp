@@ -1,15 +1,15 @@
 #pragma once
 
-#include "lve_camera.hpp"
-#include "lve_pipeline.hpp"
-#include "lve_game_object.hpp"
-#include "lve_device.hpp"
+#include "mge_camera.hpp"
+#include "mge_pipeline.hpp"
+#include "mge_game_object.hpp"
+#include "mge_device.hpp"
 
 // std
 #include <memory>
 #include <vector>
 
-namespace m_lve
+namespace mge
 {
     class SimpleRenderSystem
     {
@@ -17,14 +17,14 @@ namespace m_lve
         void createPipelineLayout();
         void createPipeline(VkRenderPass renderPass);
 
-        LveDevice& lveDevice;
+        MgeDevice& mgeDevice;
         
-        std::unique_ptr<LvePipeline> lvePipeline;
+        std::unique_ptr<MgePipeline> mgePipeline;
         VkPipelineLayout pipelineLayout;
 
     public:
 
-        SimpleRenderSystem(LveDevice &device, VkRenderPass renderPass);
+        SimpleRenderSystem(MgeDevice &device, VkRenderPass renderPass);
         ~SimpleRenderSystem();
 
         SimpleRenderSystem(const SimpleRenderSystem &) = delete;
@@ -32,9 +32,9 @@ namespace m_lve
 
         void renderGameObjects(
             VkCommandBuffer commandBuffer, 
-            std::vector<LveGameObject> &gameObjects,
-            const LveCamera &camera);
+            std::vector<MgeGameObject> &gameObjects,
+            const MgeCamera &camera);
 
     };
 
-} // namespace m_lve
+} // namespace mge

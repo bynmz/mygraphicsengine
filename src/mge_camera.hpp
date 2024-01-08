@@ -5,9 +5,9 @@
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
 
-namespace m_lve {
+namespace mge {
 
-    class LveCamera
+    class MgeCamera
     {
     private:
         glm::mat4 projectionMatrix{1.f};

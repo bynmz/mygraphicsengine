@@ -7,7 +7,7 @@
 
 int main()
 {
-    m_lve::FirstApp app{};
+    mge::FirstApp app{};
 
     try
     {

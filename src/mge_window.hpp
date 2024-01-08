@@ -4,17 +4,17 @@
 #include <GLFW/glfw3.h>
 
 #include <string>
-namespace m_lve
+namespace mge
 {
 
-    class LveWindow
+    class MgeWindow
     {
     public:
-        LveWindow(int w, int h, std::string name);
-        ~LveWindow();
+        MgeWindow(int w, int h, std::string name);
+        ~MgeWindow();
 
-        LveWindow(const LveWindow &) = delete;
-        LveWindow &operator=(const LveWindow &) = delete;
+        MgeWindow(const MgeWindow &) = delete;
+        MgeWindow &operator=(const MgeWindow &) = delete;
 
         bool shouldClose() { return glfwWindowShouldClose(window); }
         VkExtent2D getExtent() { return {static_cast<uint32_t>(width), static_cast<uint32_t>(height)}; }

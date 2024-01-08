@@ -1,26 +1,26 @@
 #pragma once
 
-#include "lve_window.hpp"
-#include "lve_device.hpp"
-#include "lve_swap_chain.hpp"
+#include "mge_window.hpp"
+#include "mge_device.hpp"
+#include "mge_swap_chain.hpp"
 
 // std
 #include <cassert>
 #include <memory>
 #include <vector>
 
-namespace m_lve
+namespace mge
 {
-    class LveRenderer
+    class MgeRenderer
     {
     private:
         void createCommandBuffers();
         void freeCommandBuffers();
         void recreateSwapChain();
 
-        LveWindow &lveWindow;
-        LveDevice &lveDevice;
-        std::unique_ptr<LveSwapChain> lveSwapChain;
+        MgeWindow &mgeWindow;
+        MgeDevice &mgeDevice;
+        std::unique_ptr<MgeSwapChain> mgeSwapChain;
         std::vector<VkCommandBuffer> commandBuffers;
 
         uint32_t currentImageIndex;
@@ -29,14 +29,14 @@ namespace m_lve
 
     public:
 
-        LveRenderer(LveWindow &window, LveDevice &device);
-        ~LveRenderer();
+        MgeRenderer(MgeWindow &window, MgeDevice &device);
+        ~MgeRenderer();
 
-        LveRenderer(const LveRenderer &) = delete;
-        LveRenderer &operator=(const LveRenderer &) = delete;
+        MgeRenderer(const MgeRenderer &) = delete;
+        MgeRenderer &operator=(const MgeRenderer &) = delete;
 
-        VkRenderPass getSwapChainRenderPass() const { return lveSwapChain->getRenderPass(); }
-        float getAspectRatio() const { return lveSwapChain->extentAspectRatio(); }
+        VkRenderPass getSwapChainRenderPass() const { return mgeSwapChain->getRenderPass(); }
+        float getAspectRatio() const { return mgeSwapChain->extentAspectRatio(); }
         bool isFrameInProgress() const { return isFrameStarted; }
 
         VkCommandBuffer getCurrentCommandBuffer() const { 
@@ -55,4 +55,4 @@ namespace m_lve
         void endSwapChainRenderPass(VkCommandBuffer commandBuffer);
     };
 
-} // namespace m_lve
+} // namespace mge

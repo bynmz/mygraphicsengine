@@ -1,6 +1,6 @@
-#include "lve_pipeline.hpp"
+#include "mge_pipeline.hpp"
 
-#include "lve_model.hpp"
+#include "mge_model.hpp"
 
 //std
 #include <fstream>
@@ -8,23 +8,23 @@
 #include <iostream>
 #include <cassert>
 
-namespace m_lve {
+namespace mge {
 
-    LvePipeline::LvePipeline(
-            LveDevice &device, 
+    MgePipeline::MgePipeline(
+            MgeDevice &device, 
             const std::string& vertFilepath, 
             const std::string& fragFilepath, 
-            const PipelineConfigInfo& configInfo) : lveDevice{device} {
+            const PipelineConfigInfo& configInfo) : mgeDevice{device} {
         createGraphicsPipeline(vertFilepath, fragFilepath, configInfo);
     }
 
-    LvePipeline::~LvePipeline() {
-        vkDestroyShaderModule(lveDevice.device(), vertShaderModule, nullptr);
-        vkDestroyShaderModule(lveDevice.device(), fragShaderModule, nullptr);
-        vkDestroyPipeline(lveDevice.device(), graphicsPipeline, nullptr);
+    MgePipeline::~MgePipeline() {
+        vkDestroyShaderModule(mgeDevice.device(), vertShaderModule, nullptr);
+        vkDestroyShaderModule(mgeDevice.device(), fragShaderModule, nullptr);
+        vkDestroyPipeline(mgeDevice.device(), graphicsPipeline, nullptr);
     }
 
-    std::vector<char> LvePipeline::readFile(const std::string& filepath) {
+    std::vector<char> MgePipeline::readFile(const std::string& filepath) {
         std::ifstream file{filepath, std::ios::ate | std::ios::binary};
 
         if (!file.is_open()) {
@@ -41,7 +41,7 @@ namespace m_lve {
         return buffer;
     }
 
-    void LvePipeline::createGraphicsPipeline(
+    void MgePipeline::createGraphicsPipeline(
         const std::string& vertFilepath, 
         const std::string& fragFilepath, 
         const PipelineConfigInfo& configInfo){
@@ -75,8 +75,8 @@ namespace m_lve {
             shaderStages[1].pNext = nullptr;
             shaderStages[1].pSpecializationInfo = nullptr;
 
-            auto bindingDescriptions = LveModel::Vertex::getBindingDescriptions();
-            auto attributeDescriptions = LveModel::Vertex::getAttributeDescriptions();
+            auto bindingDescriptions = MgeModel::Vertex::getBindingDescriptions();
+            auto attributeDescriptions = MgeModel::Vertex::getAttributeDescriptions();
             VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
             vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
             vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
@@ -112,27 +112,27 @@ namespace m_lve {
             pipelineInfo.basePipelineIndex = -1;
             pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-            if (vkCreateGraphicsPipelines(lveDevice.device(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS) {
+            if (vkCreateGraphicsPipelines(mgeDevice.device(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS) {
                 throw std::runtime_error("failed to create graphics pipeline");
             }
         }
 
-    void LvePipeline::createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule){
+    void MgePipeline::createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule){
         VkShaderModuleCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
         createInfo.codeSize = code.size();
         createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
 
-        if (vkCreateShaderModule(lveDevice.device(), &createInfo, nullptr, shaderModule) != VK_SUCCESS) {
+        if (vkCreateShaderModule(mgeDevice.device(), &createInfo, nullptr, shaderModule) != VK_SUCCESS) {
             throw std::runtime_error("failed to create shader module");
         }
     }
 
-    void LvePipeline::bind(VkCommandBuffer commandBuffer) {
+    void MgePipeline::bind(VkCommandBuffer commandBuffer) {
         vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
     }
 
-    void LvePipeline::defaultPipelineConfigInfo(PipelineConfigInfo &configInfo) {
+    void MgePipeline::defaultPipelineConfigInfo(PipelineConfigInfo &configInfo) {
         configInfo.inputAssemblyInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
         configInfo.inputAssemblyInfo.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
         configInfo.inputAssemblyInfo.primitiveRestartEnable = VK_FALSE;
@@ -203,4 +203,4 @@ namespace m_lve {
         configInfo.dynamicStateInfo.flags = 0;
     }
 
-} // namespace m_lve
+} // namespace mge

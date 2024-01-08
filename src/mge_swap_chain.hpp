@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lve_device.hpp"
+#include "mge_device.hpp"
 
 // vulkan headers
 #include <vulkan/vulkan.h>
@@ -10,18 +10,18 @@
 #include <string>
 #include <vector>
 
-namespace m_lve {
+namespace mge {
 
-class LveSwapChain {
+class MgeSwapChain {
  public:
   static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
 
-  LveSwapChain(LveDevice &deviceRef, VkExtent2D windowExtent);
-  LveSwapChain(LveDevice &deviceRef, VkExtent2D windowExtent, std::shared_ptr<LveSwapChain> previous);
-  ~LveSwapChain();
+  MgeSwapChain(MgeDevice &deviceRef, VkExtent2D windowExtent);
+  MgeSwapChain(MgeDevice &deviceRef, VkExtent2D windowExtent, std::shared_ptr<MgeSwapChain> previous);
+  ~MgeSwapChain();
 
-  LveSwapChain(const LveSwapChain &) = delete;
-  LveSwapChain& operator=(const LveSwapChain &) = delete;
+  MgeSwapChain(const MgeSwapChain &) = delete;
+  MgeSwapChain& operator=(const MgeSwapChain &) = delete;
 
   VkFramebuffer getFrameBuffer(int index) { return swapChainFramebuffers[index]; }
   VkRenderPass getRenderPass() { return renderPass; }
@@ -40,7 +40,7 @@ class LveSwapChain {
   VkResult acquireNextImage(uint32_t *imageIndex);
   VkResult submitCommandBuffers(const VkCommandBuffer *buffers, uint32_t *imageIndex);
 
-  bool compareSwapFormats(const LveSwapChain& swapChain) const {
+  bool compareSwapFormats(const MgeSwapChain& swapChain) const {
     return swapChain.swapChainDepthFormat == swapChainDepthFormat && 
            swapChain.swapChainImageFormat == swapChainImageFormat;
   }
@@ -74,11 +74,11 @@ class LveSwapChain {
   std::vector<VkImage> swapChainImages;
   std::vector<VkImageView> swapChainImageViews;
 
-  LveDevice &device;
+  MgeDevice &device;
   VkExtent2D windowExtent;
 
   VkSwapchainKHR swapChain;
-  std::shared_ptr<LveSwapChain> oldSwapChain;
+  std::shared_ptr<MgeSwapChain> oldSwapChain;
 
   std::vector<VkSemaphore> imageAvailableSemaphores;
   std::vector<VkSemaphore> renderFinishedSemaphores;
@@ -87,4 +87,4 @@ class LveSwapChain {
   size_t currentFrame = 0;
 };
 
-}  // namespace lve
+}  // namespace mge
