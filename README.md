@@ -1,1 +1,1 @@
-Vulkan sample.
+Vulkan renderer sample.
